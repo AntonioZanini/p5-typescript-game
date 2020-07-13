@@ -1,5 +1,7 @@
 // This file will add both p5 instanced and global intellisence 
 import module = require('p5');
+import 'p5/lib/addons/p5.sound';
+import 'p5/lib/addons/p5.dom';
 import * as p5Global from 'p5/global' 
 
 export = module;

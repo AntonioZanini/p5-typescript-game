@@ -1,0 +1,65 @@
+{
+    "commonResources": [
+        {
+            "name": "BG_FOREST",
+            "path": "assets/background/forest.png",
+            "type": "IMAGEM"
+        }
+    ],
+    "spriteResources": [
+        {
+            "name": "slime",
+            "path": "assets/sprites/slime.png",
+            "spriteWidth": 104,
+            "spriteHeight": 104,
+            "spriteNumber": 16,
+            "spritePerRow": 4,
+            "tipoColisao": "circle",
+            "caixaColisao": [0.5, 0.5, 1],
+            "recolors": [
+                { "sufix": "red", "colorName": "vermelho"},
+                { "sufix": "green", "colorName": "verde" },
+                { "sufix": "orange", "colorName": "laranja" }
+            ]
+        },
+        {
+            "name": "dog",
+            "path": "assets/sprites/dog-walk.png",
+            "spriteWidth": 264,
+            "spriteHeight": 202,
+            "spriteNumber": 28,
+            "spritePerRow": 5,
+            "tipoColisao": "circle",
+            "caixaColisao": [0.5, 0.5, 0.8],
+            "recolors": [
+                { "sufix": "red", "colorName": "vermelho"},
+                { "sufix": "green", "colorName": "verde" }
+            ]
+        },
+        {
+            "name": "dogPulando",
+            "path": "assets/sprites/test_jump-Sheet.png",
+            "spriteWidth": 224,
+            "spriteHeight": 192,
+            "spriteNumber": 25,
+            "spritePerRow": 5,
+            "tipoColisao": "circle",
+            "caixaColisao": [85, 55, 0.8],
+            "recolors": [
+                { "sufix": "red", "colorName": "vermelho"},
+                { "sufix": "green", "colorName": "verde" }
+            ]
+        },
+        {
+            "name": "witchCharge",
+            "path": "assets/sprites/witch-charge.png",
+            "spriteWidth": 480,
+            "spriteHeight": 480,
+            "spriteNumber": 14,
+            "spritePerRow": 5,
+            "tipoColisao": "circle",
+            "caixaColisao": [85, 55, 0.8]
+        }
+
+    ]
+}
