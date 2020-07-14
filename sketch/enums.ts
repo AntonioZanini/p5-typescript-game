@@ -1,7 +1,7 @@
-type ResourceName = 'IMAGEM' | 'SOM' | 'FONTE' | 'TEXTO' | "SPRITESHEET";
-type ColorName = 'azul' | 'verde' | 'vermelho' | 'amarelo' | 'laranja' | 'rosa' | 'transparente';
+export type ResourceName = 'IMAGEM' | 'SOM' | 'FONTE' | 'TEXTO' | "SPRITESHEET";
+export type ColorName = 'azul' | 'verde' | 'vermelho' | 'amarelo' | 'laranja' | 'rosa' | 'transparente';
 
-enum ResourceType {
+export enum ResourceType {
     image = "IMAGEM",
     spriteSheet = "SPRITESHEET",
     sound = "SOM",
@@ -9,17 +9,17 @@ enum ResourceType {
     text = "TEXTO"
 }
 
-enum ColisionType {
+export enum ColisionType {
     rect,
     circle
 }
 
-enum SizeType {
+export enum SizeType {
     fixed,
     dynamic
 }
 
-enum DirectionType {
+export enum DirectionType {
     up = 'up',
     down = 'down',
     left = 'left',

@@ -1,3 +1,4 @@
+import { DirectionType, SizeType } from '../enums'
 import { IRectangle, IMoveAnimations, IActorState } from '../interfaces';
 import { Actor } from './actor';
 
@@ -22,10 +23,10 @@ export class MobileActor extends Actor {
     }
 
     draw() {
-        if (this.moves[this.currentMove]?.animate()) {
-            super.draw(this.moves[this.currentMove]?.animate());
+        let selectedAnimation = this.moves[this.currentMove];
+        if (selectedAnimation) {
+            super.draw(selectedAnimation.animate());
         }
-
     }
 
     move(direction: DirectionType, distance: number) {
