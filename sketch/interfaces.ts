@@ -1,15 +1,15 @@
-interface IResourcePackJSON {
+export interface IResourcePackJSON {
     commonResources: Array<IImportResource>,
     spriteResources: Array<ISpriteImportResource>
 }
 
-interface IImportResource{
+export interface IImportResource{
     name: string,
     path: string,
     type: string
 }
 
-interface ISpriteImportResource{
+export interface ISpriteImportResource{
     name: string,
     path: string,
     spriteWidth: number,
@@ -21,19 +21,19 @@ interface ISpriteImportResource{
     recolors?: Array<IRecolor>
 }
 
-interface IRectangle {
+export interface IRectangle {
     posX: number;
     posY: number;
     width: number;
     height: number;
 }
 
-interface IRecolor {
+export interface IRecolor {
     sufix: string;
     colorName: ColorName;
 }
 
-interface ISpriteAnimation {
+export interface ISpriteAnimation {
     suggestedWidth?: number;
     suggestedHeight?: number;
     draw(location: IRectangle): void;
@@ -41,7 +41,21 @@ interface ISpriteAnimation {
     equals(animation: ISpriteAnimation): boolean;
 }
 
-interface IActorState {
+export interface IMoveAnimations {
+    up?: ISpriteAnimation,
+    down?: ISpriteAnimation,
+    left?: ISpriteAnimation,
+    right?: ISpriteAnimation
+}
+
+export interface IDirectionalControls {
+    up?: Array<number>,
+    down?: Array<number>,
+    left?: Array<number>,
+    right?: Array<number>,
+}
+
+export interface IActorState {
     name: string,
     animation: ISpriteAnimation,
     nextState: IActorState,

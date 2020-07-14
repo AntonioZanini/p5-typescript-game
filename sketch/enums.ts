@@ -1,5 +1,6 @@
 type ResourceName = 'IMAGEM' | 'SOM' | 'FONTE' | 'TEXTO' | "SPRITESHEET";
 type ColorName = 'azul' | 'verde' | 'vermelho' | 'amarelo' | 'laranja' | 'rosa' | 'transparente';
+
 enum ResourceType {
     image = "IMAGEM",
     spriteSheet = "SPRITESHEET",
@@ -16,4 +17,11 @@ enum ColisionType {
 enum SizeType {
     fixed,
     dynamic
+}
+
+enum DirectionType {
+    up = 'up',
+    down = 'down',
+    left = 'left',
+    right = 'right'
 }

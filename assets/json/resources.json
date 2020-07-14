@@ -9,17 +9,17 @@
     "spriteResources": [
         {
             "name": "slime",
-            "path": "assets/sprites/slime.png",
-            "spriteWidth": 104,
-            "spriteHeight": 104,
-            "spriteNumber": 16,
-            "spritePerRow": 4,
+            "path": "assets/sprites/slime-moving.png",
+            "spriteWidth": 120,
+            "spriteHeight": 120,
+            "spriteNumber": 28,
+            "spritePerRow": 5,
             "tipoColisao": "circle",
             "caixaColisao": [0.5, 0.5, 1],
             "recolors": [
                 { "sufix": "red", "colorName": "vermelho"},
                 { "sufix": "green", "colorName": "verde" },
-                { "sufix": "orange", "colorName": "laranja" }
+                { "sufix": "blue", "colorName": "azul" }
             ]
         },
         {

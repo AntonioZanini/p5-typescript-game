@@ -6,6 +6,7 @@ let img: p5.Image;
 let personagem: Actor;
 let personagem2: Actor;
 let personagem3: Actor;
+let dogChar: ControlledActor;
 
 let blinkSlime: ISpriteAnimation;
 
@@ -43,16 +44,16 @@ function setup() {
   personagem = new Actor({
     posX: 300,
     posY: windowHeight - 100,
-    width: 55,
-    height: 55
+    width: 75,
+    height: 75
   },
   SizeType.fixed
   );
   personagem2 = new Actor({
     posX: 600,
     posY: windowHeight - 100,
-    width: 55,
-    height: 55
+    width: 75,
+    height: 75
   },
   SizeType.fixed);
 
@@ -65,10 +66,9 @@ function setup() {
   SizeType.dynamic
   );
 
-
   blinkSlime = new MultipleSpriteAnimation(
-    [resources.getRecurso<Sprite>(ResourceType.spriteSheet, "slime_orange"),
-    resources.getRecurso<Sprite>(ResourceType.spriteSheet, "slime_red"),],
+    [resources.getRecurso<Sprite>(ResourceType.spriteSheet, "slime_green"),
+    resources.getRecurso<Sprite>(ResourceType.spriteSheet, "slime_blue"),],
     [[0,0], [0,1], [0,2], [0,3], [0,4], [0,5], [0,6], [1,7], 
      [1,8], [1,9], [1,10], [1,11], [1,12], [1,13], [1,14]], 
     true,
@@ -131,6 +131,26 @@ function setup() {
   charAnimations = [ animaDogRight, animaDogLeft ]
   dir = -1;
   textSize(30);
+
+  
+  dogChar = new ControlledActor({
+      posX: windowWidth / 2,
+      posY: windowHeight -100,
+      width: 0,
+      height: 0,
+    },
+    SizeType.dynamic,
+    {
+      left: animaDogLeft,
+      right: animaDogRight
+    },
+    DirectionType.right,
+    {
+      right: [RIGHT_ARROW, 68],
+      left: [LEFT_ARROW, 65]
+    }
+  );
+
 }
 
 // p5 WILL HANDLE REQUESTING ANIMATION FRAMES FROM THE BROWSER AND WIL RUN DRAW() EACH ANIMATION FROME
@@ -138,25 +158,14 @@ function draw() {
   let selectedChar: Actor = personagem3;//personagem2;
   //[animacao, animacao2];
   clear();
-  if (keyIsDown(RIGHT_ARROW) || keyIsDown(68)) {
-    if (dir == -1) {
-      selectedChar.location.posX += selectedChar.location.width;
-      animacaoAtual = charAnimations[0];
-      dir = 1;
-    }
-    selectedChar.location.posX += 5;
-  }
-  if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) {
-    if (dir == 1) {
-      selectedChar.location.posX -= selectedChar.location.width;
-      animacaoAtual = charAnimations[1];
-      dir = -1;
-    }
-    selectedChar.location.posX -= 5;
-  }
+
 
   image(img, 0, 0, width, height);
   //text(frameCount, 0, 0, 200, 200);
+
+  
+  dogChar.draw();
+  dogChar.keyIsPressed();
 
   personagem.draw(blinkSlime.animate());
   personagem3.draw(animacaoAtual.animate());

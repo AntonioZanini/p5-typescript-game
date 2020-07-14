@@ -1,10 +1,17 @@
-class Actor {
-  protected currentAnimation: ISpriteAnimation;
-  constructor(
-    public location: IRectangle,
-    protected sizeType: SizeType
-  ) {
+import { ISpriteAnimation, IRectangle }  from '../interfaces';
 
+export class Actor {
+  
+  protected currentAnimation: ISpriteAnimation;
+  public location: IRectangle;
+  protected sizeType: SizeType;
+
+  constructor(
+    location: IRectangle,
+    sizeType: SizeType
+  ) {
+    this.location = location;
+    this.sizeType = sizeType;
   }
 
   draw(animation: ISpriteAnimation) {
@@ -16,7 +23,6 @@ class Actor {
   }
 
   updateSize() {
-    console.log([this.location.height, this.location.width]);
     const a = this.currentAnimation;
     
     if (a.suggestedHeight && this.location.height > 0){
@@ -31,7 +37,5 @@ class Actor {
     this.location.width = a.suggestedWidth ? 
                           a.suggestedWidth:
                           this.location.width;
-
-    console.log(a);
   }
 }
