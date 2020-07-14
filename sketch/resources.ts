@@ -1,6 +1,7 @@
-import { ColorName, ResourceName, ResourceType } from './enums'
-import { ISpriteImportResource, IResourcePackJSON } from './interfaces'
 import p5 from 'p5';
+import { ColorName, ResourceName, ResourceType } from './enums';
+import { ISpriteImportResource, IResourcePackJSON } from './interfaces';
+import { Sprite } from './animation/sprite';
 
 export class Resources {
 

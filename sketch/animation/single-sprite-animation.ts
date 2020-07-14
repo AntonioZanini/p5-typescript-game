@@ -1,19 +1,35 @@
-import
+import { IRectangle, ISpriteAnimation } from '../interfaces';
+import { Sprite} from './sprite';
+
 export class SingleSpriteAnimation implements ISpriteAnimation
 {
-    private currentFrame: number = 0;
-    private delay: number = 0;
+    protected currentFrame: number = 0;
+    protected delay: number = 0;
+    public sprite: Sprite;
+    public frameNumberList: Array<number>;
+    public loop: boolean;
+    public frameDelay: number;
+    public hFlipped: boolean;
+    public suggestedWidth?: number;
+    public suggestedHeight?: number;
+
     constructor(
-        public sprite: Sprite,
-        public frameNumberList: Array<number>,
-        public loop: boolean,
-        public frameDelay: number = 0,
-        public hFlipped: boolean = false,
-        public suggestedWidth?: number,
-        public suggestedHeight?: number
+        sprite: Sprite,
+        frameNumberList: Array<number>,
+        loop: boolean,
+        frameDelay: number = 0,
+        hFlipped: boolean = false,
+        suggestedWidth?: number,
+        suggestedHeight?: number
     ) {
         this.delay = this.frameDelay;
-        
+        this.sprite = sprite;
+        this.frameNumberList = frameNumberList;
+        this.loop = loop;
+        this.frameDelay = frameDelay;
+        this.hFlipped = hFlipped;
+        this.suggestedWidth = suggestedWidth;
+        this.suggestedHeight = suggestedHeight;
     }
 
     draw(location: IRectangle) {

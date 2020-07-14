@@ -1,3 +1,4 @@
+import { SizeType } from '../enums';
 import { ISpriteAnimation, IRectangle }  from '../interfaces';
 
 export class Actor {

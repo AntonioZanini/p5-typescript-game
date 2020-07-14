@@ -3,6 +3,9 @@ import { IRectangle, IMoveAnimations, IActorState, IDirectionalControls } from '
 import { MobileActor } from './mobile-actor'
 
 export class ControlledActor extends MobileActor {
+
+    protected directionalControls: IDirectionalControls;
+
     /**
      *
      */
@@ -11,7 +14,7 @@ export class ControlledActor extends MobileActor {
         sizeType: SizeType,
         moves: IMoveAnimations,
         initialDirection: DirectionType,
-        protected directionalControls: IDirectionalControls,
+        directionalControls: IDirectionalControls,
         states?: Array<IActorState>
 
     ) {
@@ -22,6 +25,8 @@ export class ControlledActor extends MobileActor {
             initialDirection,
             states
         );
+
+        this.directionalControls = directionalControls;
         
     }
 

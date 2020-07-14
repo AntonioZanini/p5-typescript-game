@@ -1,7 +1,17 @@
+import { ResourceType, SizeType, DirectionType } from './enums';
+import { ISpriteAnimation } from './interfaces';
+import { Resources } from './resources';
+import { Sprite } from './animation/sprite';
+import { SingleSpriteAnimation } from './animation/single-sprite-animation';
+import { MultipleSpriteAnimation } from './animation/multiple-sprite-animation';
+import { Actor } from './game/actor';
+import { MobileActor } from './game/mobile-actor';
+import { ControlledActor } from './game/controlled-actor';
+
 // GLOBAL VARS & TYPES
 
 let resources: Resources;
-let img: p5.Image;
+let img: p5.Image | undefined;
 
 let personagem: Actor;
 let personagem2: Actor;
@@ -68,7 +78,7 @@ function setup() {
 
   blinkSlime = new MultipleSpriteAnimation(
     [resources.getRecurso<Sprite>(ResourceType.spriteSheet, "slime_green"),
-    resources.getRecurso<Sprite>(ResourceType.spriteSheet, "slime_blue"),],
+    resources.getRecurso<Sprite>(ResourceType.spriteSheet, "slime_blue")],
     [[0,0], [0,1], [0,2], [0,3], [0,4], [0,5], [0,6], [1,7], 
      [1,8], [1,9], [1,10], [1,11], [1,12], [1,13], [1,14]], 
     true,
@@ -155,13 +165,12 @@ function setup() {
 
 // p5 WILL HANDLE REQUESTING ANIMATION FRAMES FROM THE BROWSER AND WIL RUN DRAW() EACH ANIMATION FROME
 function draw() {
-  let selectedChar: Actor = personagem3;//personagem2;
-  //[animacao, animacao2];
   clear();
 
-
-  image(img, 0, 0, width, height);
-  //text(frameCount, 0, 0, 200, 200);
+  if (img) {
+    image(img, 0, 0, width, height);
+  }
+  text(frameCount, 0, 0, 200, 200);
 
   
   dogChar.draw();

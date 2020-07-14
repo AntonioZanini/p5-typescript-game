@@ -23,6 +23,15 @@ export class Sprite {
     colisionBox: Array<number>,
     recolors?: Array<IRecolor>) {
 
+  this.spriteSheet = spriteSheet;
+  this.spriteWidth = spriteWidth;
+  this.spriteHeight = spriteHeight;
+  this.spriteNumber = spriteNumber;
+  this.spritesByRow = spritesByRow;
+  this.colisionType = colisionType;
+  this.colisionBox = colisionBox;
+  this.recolors = recolors;
+
     this.frameArray = [];
     for (let i = 0; i < this.spriteNumber; i++) {
       const coordX: number = (i % this.spritesByRow) * this.spriteWidth;
