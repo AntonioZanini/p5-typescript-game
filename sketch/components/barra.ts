@@ -1,4 +1,4 @@
-class Barra {
+export class Barra {
   constructor(
     private imagem: p5.Image,
     private valorMaximo: number,

@@ -1,4 +1,8 @@
-class Resources {
+import { ColorName, ResourceName, ResourceType } from './enums'
+import { ISpriteImportResource, IResourcePackJSON } from './interfaces'
+import p5 from 'p5';
+
+export class Resources {
 
   private listaStringsRecursos: Record<ResourceName, Array<[string, string]>>;
   private listaRecursos: Record<ResourceName, Array<[string, any]>>;
@@ -23,10 +27,10 @@ class Resources {
   }
 
   importFromJSON(path: string, loadResources: boolean) {
-    const importedData = loadJSON(path,
-       (result: IResourcePackJSON) => {
-          this.addFromJSON(result, loadResources);
-       }) as IResourcePackJSON;
+    loadJSON(path,
+      (result: IResourcePackJSON) => {
+        this.addFromJSON(result, loadResources);
+      }) as IResourcePackJSON;
 
   }
 
@@ -46,15 +50,15 @@ class Resources {
     if (this.listaStringsRecursos[tipoRecurso]) {
       this.listaStringsRecursos[tipoRecurso] = this.listaStringsRecursos[tipoRecurso].concat(listaRecursos);
     } else {
-      this.listaStringsRecursos[tipoRecurso] = [].concat(listaRecursos);
+      this.listaStringsRecursos[tipoRecurso] = ([] as Array<[string, string]>).concat(listaRecursos);
     }
   }
 
-  addSprite(listaStringsSprites: Array<ISpriteImportResource>){
+  addSprite(listaStringsSprites: Array<ISpriteImportResource>) {
     if (this.listaStringsSprites) {
       this.listaStringsSprites = this.listaStringsSprites.concat(listaStringsSprites);
     } else {
-      this.listaStringsSprites = [].concat(listaStringsSprites);
+      this.listaStringsSprites = ([] as Array<ISpriteImportResource>).concat(listaStringsSprites);
     }
   }
 
@@ -67,7 +71,7 @@ class Resources {
           if (this.listaRecursos[propertyName as ResourceName]) {
             this.listaRecursos[propertyName as ResourceName].push([tuple[0], res]);
           } else {
-            this.listaRecursos[propertyName as ResourceName] = [].concat([[tuple[0], res]]);
+            this.listaRecursos[propertyName as ResourceName] = ([] as Array<[string, any]>).concat([[tuple[0], res]]);
           }
         });
     }
@@ -76,24 +80,24 @@ class Resources {
       const name: string = stringSprite.name;
       let image: p5.Image = loadImage(stringSprite.path);
       const sprite: Sprite = new Sprite(
-                                image, 
-                                stringSprite.spriteWidth, 
-                                stringSprite.spriteHeight,
-                                stringSprite.spriteNumber,
-                                stringSprite.spritePerRow,
-                                stringSprite.tipoColisao,
-                                stringSprite.caixaColisao,
-                                stringSprite.recolors
+        image,
+        stringSprite.spriteWidth,
+        stringSprite.spriteHeight,
+        stringSprite.spriteNumber,
+        stringSprite.spritePerRow,
+        stringSprite.tipoColisao,
+        stringSprite.caixaColisao,
+        stringSprite.recolors
       );
       if (this.listaRecursos[ResourceType.spriteSheet as ResourceName]) {
         this.listaRecursos[ResourceType.spriteSheet as ResourceName].push([name, sprite]);
       } else {
-        this.listaRecursos[ResourceType.spriteSheet as ResourceName] = [].concat([[name, sprite]]);
+        this.listaRecursos[ResourceType.spriteSheet as ResourceName] = ([] as Array<[string, any]>).concat([[name, sprite]]);
       }
     });
   }
 
-  loadRecolors(){
+  loadRecolors() {
     this.listaRecursos[ResourceType.spriteSheet as ResourceName].forEach(rsrc => {
 
       const recolorSprites = (rsrc[1] as Sprite).generateRecolorList(rsrc[0]);
@@ -105,11 +109,12 @@ class Resources {
     });
   }
 
-  getRecurso<T>(tipoRecurso: ResourceType, nomeRecurso: string):T{
-    return this.listaRecursos[tipoRecurso as ResourceName].find(r => r[0] === nomeRecurso)[1] as T;
+  getRecurso<T>(tipoRecurso: ResourceType, nomeRecurso: string): T | undefined {
+    let selectedRes = this.listaRecursos[tipoRecurso as ResourceName].find(r => r[0] === nomeRecurso)
+    return (selectedRes) ? selectedRes[1] as T : undefined;
   }
 
-  private loadResource(tipoRecurso: ResourceType, caminho: string) : any {
+  private loadResource(tipoRecurso: ResourceType, caminho: string): any {
     switch (tipoRecurso) {
       case ResourceType.font:
         return loadFont(caminho);

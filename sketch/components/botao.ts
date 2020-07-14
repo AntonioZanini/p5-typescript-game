@@ -1,4 +1,4 @@
-class Botao {
+export class Botao {
   private visible: boolean;
   private botao: p5.Element;
   constructor(private texto: string, 

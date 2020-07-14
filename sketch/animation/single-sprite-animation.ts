@@ -1,4 +1,5 @@
-class SingleSpriteAnimation implements ISpriteAnimation
+import
+export class SingleSpriteAnimation implements ISpriteAnimation
 {
     private currentFrame: number = 0;
     private delay: number = 0;

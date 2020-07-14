@@ -1,15 +1,16 @@
+import { ColisionType, ColorName } from './enums'
 export interface IResourcePackJSON {
     commonResources: Array<IImportResource>,
     spriteResources: Array<ISpriteImportResource>
 }
 
-export interface IImportResource{
+export interface IImportResource {
     name: string,
     path: string,
     type: string
 }
 
-export interface ISpriteImportResource{
+export interface ISpriteImportResource {
     name: string,
     path: string,
     spriteWidth: number,
@@ -41,19 +42,43 @@ export interface ISpriteAnimation {
     equals(animation: ISpriteAnimation): boolean;
 }
 
-export interface IMoveAnimations {
-    up?: ISpriteAnimation,
-    down?: ISpriteAnimation,
-    left?: ISpriteAnimation,
-    right?: ISpriteAnimation
-}
+export type IMoveAnimations =
+    {
+        up: ISpriteAnimation, down?: ISpriteAnimation,
+        left?: ISpriteAnimation, right?: ISpriteAnimation
+    } |
+    {
+        up?: ISpriteAnimation, down: ISpriteAnimation,
+        left?: ISpriteAnimation, right?: ISpriteAnimation
+    } |
+    {
+        up?: ISpriteAnimation, down?: ISpriteAnimation,
+        left: ISpriteAnimation, right?: ISpriteAnimation
+    } |
+    {
+        up?: ISpriteAnimation, down?: ISpriteAnimation,
+        left?: ISpriteAnimation, right: ISpriteAnimation
+    };
 
-export interface IDirectionalControls {
-    up?: Array<number>,
-    down?: Array<number>,
-    left?: Array<number>,
-    right?: Array<number>,
-}
+export type IDirectionalControls =
+    {
+        up: Array<number>, down?: Array<number>,
+        left?: Array<number>, right?: Array<number>
+    } |
+    {
+        up?: Array<number>, down: Array<number>,
+        left?: Array<number>, right?: Array<number>
+    } |
+    {
+        up?: Array<number>, down?: Array<number>,
+        left: Array<number>, right?: Array<number>
+    } |
+    {
+        up?: Array<number>, down?: Array<number>,
+        left?: Array<number>, right: Array<number>
+    };
+
+
 
 export interface IActorState {
     name: string,
