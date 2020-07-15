@@ -25,3 +25,10 @@ export enum DirectionType {
     left = 'left',
     right = 'right'
 }
+
+export enum AnimationList {
+    blinkSlime = 'blinkSlime',
+    dogLeft = 'dogLeft',
+    dogRight = 'dogRight',
+    slime = 'slime'
+}

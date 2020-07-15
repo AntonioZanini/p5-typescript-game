@@ -5,6 +5,8 @@ export class SingleSpriteAnimation implements ISpriteAnimation
 {
     protected currentFrame: number = 0;
     protected delay: number = 0;
+
+    public name: string;
     public sprite: Sprite;
     public frameNumberList: Array<number>;
     public loop: boolean;
@@ -14,6 +16,7 @@ export class SingleSpriteAnimation implements ISpriteAnimation
     public suggestedHeight?: number;
 
     constructor(
+        name: string,
         sprite: Sprite,
         frameNumberList: Array<number>,
         loop: boolean,
@@ -22,6 +25,7 @@ export class SingleSpriteAnimation implements ISpriteAnimation
         suggestedWidth?: number,
         suggestedHeight?: number
     ) {
+        this.name = name;
         this.delay = this.frameDelay;
         this.sprite = sprite;
         this.frameNumberList = frameNumberList;
@@ -56,6 +60,7 @@ export class SingleSpriteAnimation implements ISpriteAnimation
 
     animate(): ISpriteAnimation {
         return new SingleSpriteAnimation(
+            this.name,
             this.sprite,
             this.frameNumberList,
             this.loop,
@@ -69,7 +74,8 @@ export class SingleSpriteAnimation implements ISpriteAnimation
 
     equals(animation: ISpriteAnimation) {
         if (!(animation instanceof SingleSpriteAnimation)) { return false; }
-        if (this.sprite === animation.sprite &&
+        if (this.name === animation.name &&
+            this.sprite === animation.sprite &&
             this.frameNumberList === animation.frameNumberList &&
             this.loop === animation.loop &&
             this.frameDelay === animation.frameDelay &&

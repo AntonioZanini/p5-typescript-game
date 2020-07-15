@@ -2,8 +2,11 @@ import { IRectangle, ISpriteAnimation } from '../interfaces';
 import { Sprite } from './sprite';
 
 export class MultipleSpriteAnimation implements ISpriteAnimation {
+
     private currentFrame: number = 0;
     private delay: number = 0;
+
+    public name: string;
     public sprites: Array<Sprite>;
     public frameNumberList: Array<[number, number]>;
     public loop: boolean;
@@ -13,6 +16,7 @@ export class MultipleSpriteAnimation implements ISpriteAnimation {
     public suggestedHeight?: number;
 
     constructor(
+        name: string,
         sprites: Array<Sprite>,
         frameNumberList: Array<[number, number]>,
         loop: boolean,
@@ -21,6 +25,7 @@ export class MultipleSpriteAnimation implements ISpriteAnimation {
         suggestedWidth?: number,
         suggestedHeight?: number
     ) {
+        this.name = name;
         this.delay = this.frameDelay;
         this.sprites = sprites;
         this.frameNumberList = frameNumberList;
@@ -56,6 +61,7 @@ export class MultipleSpriteAnimation implements ISpriteAnimation {
 
     animate(): ISpriteAnimation {
         return new MultipleSpriteAnimation(
+            this.name,
             this.sprites,
             this.frameNumberList,
             this.loop,
@@ -68,7 +74,8 @@ export class MultipleSpriteAnimation implements ISpriteAnimation {
 
     equals(animation: ISpriteAnimation) {
         if (!(animation instanceof MultipleSpriteAnimation)) { return false; }
-        if (this.sprites === animation.sprites &&
+        if (this.name == animation.name &&
+            this.sprites === animation.sprites &&
             this.frameNumberList === animation.frameNumberList &&
             this.loop === animation.loop &&
             this.frameDelay === animation.frameDelay &&

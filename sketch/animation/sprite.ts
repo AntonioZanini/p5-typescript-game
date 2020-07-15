@@ -1,6 +1,6 @@
 import { ColisionType } from '../enums';
 import { IRectangle, IRecolor } from '../interfaces';
-
+import { Resources } from '../resources';
 export class Sprite {
 
   private frameArray: Array<[number, number]>;
@@ -47,7 +47,7 @@ export class Sprite {
         const pg = createGraphics(this.spriteSheet.width, this.spriteSheet.height);
 
         pg.imageMode(CORNER);
-        pg.tint(resources.listaCores[recolor.colorName]);
+        pg.tint(Resources.getInstace().listaCores[recolor.colorName]);
         pg.image(this.spriteSheet, 0, 0);
         const tintedImage = pg.get();
         pg.noTint();

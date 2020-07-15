@@ -1,20 +1,25 @@
 import p5 from 'p5';
-import { ColorName, ResourceName, ResourceType } from './enums';
-import { ISpriteImportResource, IResourcePackJSON } from './interfaces';
+import { ColorName, ResourceName, ResourceType, AnimationList } from './enums';
+import { ISpriteImportResource, IResourcePackJSON, ISpriteAnimation } from './interfaces';
 import { Sprite } from './animation/sprite';
+import { SingleSpriteAnimation } from './animation/single-sprite-animation'
+import { MultipleSpriteAnimation } from './animation/multiple-sprite-animation'
 
 export class Resources {
 
   private listaStringsRecursos: Record<ResourceName, Array<[string, string]>>;
   private listaRecursos: Record<ResourceName, Array<[string, any]>>;
-
   private listaStringsSprites: Array<ISpriteImportResource>;
 
-  public listaCores: Record<ColorName, p5.Color>;
+  public animacoes: Record<AnimationList, ISpriteAnimation>;
 
-  constructor() {
+  public listaCores: Record<ColorName, p5.Color>;
+  private static instance: Resources;
+
+  private constructor() {
     this.listaStringsRecursos = {} as Record<ResourceName, Array<[string, string]>>;
     this.listaRecursos = {} as Record<ResourceName, Array<[string, any]>>;
+    this.animacoes = {} as Record<AnimationList, ISpriteAnimation>;
 
     this.listaCores = {} as Record<ColorName, p5.Color>;
     this.listaCores.vermelho = color(255, 0, 0);
@@ -25,6 +30,13 @@ export class Resources {
     this.listaCores.rosa = color(255, 0, 127);
     this.listaCores.transparente = color(0, 0, 0, 0);
 
+  }
+
+  public static getInstace(): Resources {
+    if (!Resources.instance) {
+      Resources.instance = new Resources();
+    }
+    return Resources.instance;
   }
 
   importFromJSON(path: string, loadResources: boolean) {
@@ -42,7 +54,7 @@ export class Resources {
       });
       this.addSprite(importedData.spriteResources)
       if (loadResources) {
-        this.load();
+        this.preload();
       }
     }
   }
@@ -63,7 +75,7 @@ export class Resources {
     }
   }
 
-  load() {
+  preload() {
 
     for (let propertyName in this.listaStringsRecursos) {
       this.listaStringsRecursos[propertyName as ResourceName].
@@ -98,7 +110,7 @@ export class Resources {
     });
   }
 
-  loadRecolors() {
+  load() {
     this.listaRecursos[ResourceType.spriteSheet as ResourceName].forEach(rsrc => {
 
       const recolorSprites = (rsrc[1] as Sprite).generateRecolorList(rsrc[0]);
@@ -108,6 +120,7 @@ export class Resources {
         });
       }
     });
+    this.createAnimations();
   }
 
   getRecurso<T>(tipoRecurso: ResourceType, nomeRecurso: string): T | undefined {
@@ -128,4 +141,61 @@ export class Resources {
     }
   }
 
+
+  private createAnimations() {
+    let spriteSheetList = [] as Array<Sprite|undefined>;
+    spriteSheetList.push(this.getRecurso<Sprite>(ResourceType.spriteSheet, "slime_green"))
+    spriteSheetList.push(this.getRecurso<Sprite>(ResourceType.spriteSheet, "slime_blue"))
+    
+
+    this.animacoes.blinkSlime =  new MultipleSpriteAnimation(
+      AnimationList.blinkSlime,
+      spriteSheetList.filter(s => s) as Array<Sprite>,
+      [[0,0], [0,1], [0,2], [0,3], [0,4], [0,5], [0,6], [1,7], 
+       [1,8], [1,9], [1,10], [1,11], [1,12], [1,13], [1,14]], 
+      true,
+      4,
+      true);
+  
+
+    spriteSheetList = [] as Array<Sprite|undefined>;
+    spriteSheetList.push(this.getRecurso<Sprite>(ResourceType.spriteSheet, "dog_green"));
+
+    this.animacoes.dogLeft = new SingleSpriteAnimation(
+      AnimationList.dogLeft,
+      spriteSheetList.find(s => s) as Sprite,
+      [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
+        15, 16, 17, 18, 19, 20, 21, 22, 23, 24],
+       true,
+       0,
+       false,
+       82, 60
+    );
+  
+    spriteSheetList = [] as Array<Sprite|undefined>;
+    spriteSheetList.push(this.getRecurso<Sprite>(ResourceType.spriteSheet, "dog_red"));
+
+    this.animacoes.dogRight = new SingleSpriteAnimation(
+      AnimationList.dogRight,
+      spriteSheetList.find(s => s) as Sprite,
+      [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
+       15, 16, 17, 18, 19, 20, 21, 22, 23, 24],
+       true,
+       0,
+       true,
+       164, 120
+    );
+  
+    spriteSheetList = [] as Array<Sprite|undefined>;
+    spriteSheetList.push(this.getRecurso<Sprite>(ResourceType.spriteSheet, "slime_red"));
+
+    this.animacoes.dogRight =  new SingleSpriteAnimation(
+      AnimationList.slime,
+      spriteSheetList.find(s => s) as Sprite,
+      [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+      true,
+      0,
+      true);
+  
+  }
 }
