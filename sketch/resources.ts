@@ -1,5 +1,5 @@
 import p5 from 'p5';
-import { ColorName, ResourceName, ResourceType, AnimationList } from './enums';
+import { ColorName, ResourceName, ResourceType, AnimationList } from './enums_old';
 import { ISpriteImportResource, IResourcePackJSON, ISpriteAnimation } from './interfaces';
 import { Sprite } from './animation/sprite';
 import { SingleSpriteAnimation } from './animation/single-sprite-animation'
