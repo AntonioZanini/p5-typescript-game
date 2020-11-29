@@ -1,4 +1,4 @@
-import { ColisionType } from '../enums';
+import { ColisionType } from '../enums_old';
 import { IRectangle, IRecolor } from '../interfaces';
 import { Resources } from '../resources';
 export class Sprite {
