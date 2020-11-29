@@ -1,4 +1,4 @@
-import { DirectionType, SizeType } from '../enums'
+import { DirectionType, SizeType } from '../enums_old'
 import { IRectangle, IMoveAnimations, IActorState } from '../interfaces';
 import { Actor } from './actor';
 
