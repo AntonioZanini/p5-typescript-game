@@ -1,4 +1,4 @@
-import { SizeType, DirectionType } from '../enums';
+import { SizeType, DirectionType } from '../enums_old';
 import { IRectangle, IMoveAnimations, IActorState, IDirectionalControls } from '../interfaces';
 import { MobileActor } from './mobile-actor'
 
