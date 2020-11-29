@@ -1,4 +1,4 @@
-import { ColisionType, ColorName } from './enums'
+import { ColisionType, ColorName } from './enums_old'
 export interface IResourcePackJSON {
     commonResources: Array<IImportResource>,
     spriteResources: Array<ISpriteImportResource>
