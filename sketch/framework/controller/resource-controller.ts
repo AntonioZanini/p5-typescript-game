@@ -1,168 +1,135 @@
-import { IResourceController, IImportResource, ISpriteImportResource } from './interfaces';
-import { ResourceType } from './enums';
+import { IResourceController, IImportResource, ISpriteImportResource, IResourcePackJSON, IImportResourceFile, IImportResourceText, IResource, IAnimationResourceLoader } from './interfaces';
+import { ResourceType, ResourceContentType, AvailableColor } from '../enums';
+import { SpriteSheet } from '../animation/sprite-sheet';
+import { ISpriteSheet } from '../animation/interfaces';
+import { SoundFile } from 'p5';
 
 export default class ResourceController implements IResourceController {
+    private resourceAddressList : Record<ResourceType, Array<IImportResource>>;
+    private resources : Record<ResourceType, Array<IResource>>;
+    private colors : Record<AvailableColor, p5.Color>;
+
+    constructor() {
+
+        this.colors = {} as Record<AvailableColor, p5.Color>;
+        this.colors.red = color(255, 0, 0);
+        this.colors.green = color(0, 127, 0);
+        this.colors.blue = color(0, 0, 127);
+        this.colors.yellow = color(127, 127, 0);
+        this.colors.orange = color(255, 127, 0);
+        this.colors.pink = color(255, 0, 127);
+        this.colors.transparent = color(0, 0, 0, 0);
+    }
+
+    getColor(colorName : AvailableColor) : p5.Color {
+        return this.colors[colorName];
+    }
+
     importFromJSON(path: string): void {
-        throw new Error("Method not implemented.");
+        loadJSON(
+            path,
+            (result: IResourcePackJSON) => this.addResourcesFromJSON(result)
+        );
     }
-    addResources(resourceType: ResourceType, ...resources: IImportResource[]): void {
-        throw new Error("Method not implemented.");
-    }
-    addSpriteResources(sprites: ISpriteImportResource[]): void {
-        throw new Error("Method not implemented.");
-    }
-    load(): void {
-        throw new Error("Method not implemented.");
-    }
-    getRecurso<T>(resourceType: ResourceType, resourceID: string): T {
-        throw new Error("Method not implemented.");
+    addResources(...resources: IImportResource[]): void {
+        if (!resources) { return; }
+        const groupedResources = this.groupImportResourcesByType(resources);
+        for (let resourceType in Object.keys(groupedResources)) {
+            const key = resourceType as ResourceType
+            if (!this.resourceAddressList[key]) {
+                this.resourceAddressList[key] = ([] as Array<IImportResource>);
+            }
+            this.resourceAddressList[key] = this.resourceAddressList[key].concat(groupedResources[key]);
+        }
     }
 
+    load(animationResourceLoader?: IAnimationResourceLoader): void {
+        this.recolorirSpriteSheets();
+        if (animationResourceLoader) {
+            animationResourceLoader.load(this);
+        }
+    }
+
+    getRecurso<T extends ResourceContentType>(resourceType: ResourceType, resourceID: string): T {
+        let resource = this.resources[resourceType].find(r => r.id === resourceID)
+        return resource?.content as T ;
+    }
+
+    private addResourcesFromJSON(importedData: IResourcePackJSON | undefined) {
+        if (importedData) {
+            this.addResources(...importedData.resources);
+            this.preload();
+        }
+    }
+
+    preload() {
+
+        for (let propertyName in Object.keys(this.resourceAddressList)) {
+            const typeKey = propertyName as ResourceType;
+            this.resourceAddressList[typeKey].
+                forEach((importResource: IImportResource) => {
+                    const typeKey = propertyName as ResourceType;
+                    const loadedResource = this.loadResource(typeKey, importResource);
+
+                    if (!this.resources[typeKey]) {
+                        this.resources[typeKey] = ([] as Array<IResource>)
+                    }
+                    this.resources[typeKey].push( { id: importResource.id, content: loadedResource});
+
+                });
+        }
+    }
+
+    private loadResource(tipoRecurso: ResourceType, importedResource: IImportResource): ResourceContentType {
+        switch (tipoRecurso) {
+        case ResourceType.font:
+            return loadFont((importedResource as IImportResourceFile).path);
+        case ResourceType.spriteSheet:
+            const spriteSheetImportResource = importedResource as ISpriteImportResource;
+            const spriteSheetImage = loadImage(spriteSheetImportResource.path);
+            return SpriteSheet.constructFromImportedResource(spriteSheetImportResource, spriteSheetImage);
+        case ResourceType.image:
+            return loadImage((importedResource as IImportResourceFile).path);
+        case ResourceType.sound:
+            return new SoundFile((importedResource as IImportResourceFile).path);
+        case ResourceType.text:
+            return (importedResource as IImportResourceText).content;
+        }
+    }
+
+    private groupImportResourcesByType(resources: Array<IImportResource>) { 
+        // `data` is an array of objects, `key` is the key (or property accessor) to group by
+        // reduce runs this anonymous function on each element of `data` (the `item` parameter,
+        // returning the `storage` parameter at the end
+        const key = 'type';
+        return resources.reduce(function(storage: any, item: IImportResource) {
+            // get the first instance of the key by which we're grouping
+            var group = item[key];
+            
+            // set `storage` for this instance of group to the outer scope (if not empty) or initialize it
+            storage[group] = storage[group] || [];
+            
+            // add this item to its group within `storage`
+            storage[group].push(item);
+            
+            // return the updated storage to the reduce function, which will then loop through the next 
+            return storage; 
+        }, {}) as Record<ResourceType, Array<IImportResource>>; // {} is the initial value of the storage
+    }
+
+    private recolorirSpriteSheets() {
+        let coloredSpriteSheets : Array<IResource> = [];
+        this.resources[ResourceType.spriteSheet].forEach(resource => {
+            const spriteSheet = resource.content as ISpriteSheet;
+            if (spriteSheet.recolor && spriteSheet.recolor.length > 0) {
+                coloredSpriteSheets = coloredSpriteSheets.concat(spriteSheet.generateColoredSpriteSheets(this));
+            }
+        });
+        if (coloredSpriteSheets && coloredSpriteSheets.length > 0){
+            this.resources[ResourceType.spriteSheet] = this.resources[ResourceType.spriteSheet].concat(coloredSpriteSheets);
+        }
+    }
 }
-
-// import p5 from 'p5';
-// import { ColorName, ResourceName, ResourceType, AnimationList } from './enums';
-// import { ISpriteImportResource, IResourcePackJSON, ISpriteAnimation } from './interfaces';
-// import { Sprite } from './animation/sprite';
-// import { SingleSpriteAnimation } from './animation/single-sprite-animation'
-// import { MultipleSpriteAnimation } from './animation/multiple-sprite-animation'
-
-// export class Resources {
-
-//   private listaStringsRecursos: Record<ResourceName, Array<[string, string]>>;
-//   private listaRecursos: Record<ResourceName, Array<[string, any]>>;
-//   private listaStringsSprites: Array<ISpriteImportResource>;
-
-//   public animacoes: Record<AnimationList, ISpriteAnimation>;
-
-//   public listaCores: Record<ColorName, p5.Color>;
-//   private static instance: Resources;
-
-//   private constructor() {
-//     this.listaStringsRecursos = {} as Record<ResourceName, Array<[string, string]>>;
-//     this.listaRecursos = {} as Record<ResourceName, Array<[string, any]>>;
-//     this.animacoes = {} as Record<AnimationList, ISpriteAnimation>;
-
-//     this.listaCores = {} as Record<ColorName, p5.Color>;
-//     this.listaCores.vermelho = color(255, 0, 0);
-//     this.listaCores.verde = color(0, 127, 0);
-//     this.listaCores.azul = color(0, 0, 127);
-//     this.listaCores.amarelo = color(127, 127, 0);
-//     this.listaCores.laranja = color(255, 127, 0);
-//     this.listaCores.rosa = color(255, 0, 127);
-//     this.listaCores.transparente = color(0, 0, 0, 0);
-
-//   }
-
-//   public static getInstace(): Resources {
-//     if (!Resources.instance) {
-//       Resources.instance = new Resources();
-//     }
-//     return Resources.instance;
-//   }
-
-//   importFromJSON(path: string, loadResources: boolean) {
-//     loadJSON(path,
-//       (result: IResourcePackJSON) => {
-//         this.addFromJSON(result, loadResources);
-//       }) as IResourcePackJSON;
-
-//   }
-
-//   private addFromJSON(importedData: IResourcePackJSON | undefined, loadResources: boolean) {
-//     if (importedData) {
-//       importedData.commonResources.forEach(commonResource => {
-//         this.addRecurso(commonResource.type as ResourceType, [[commonResource.name, commonResource.path]]);
-//       });
-//       this.addSprite(importedData.spriteResources)
-//       if (loadResources) {
-//         this.preload();
-//       }
-//     }
-//   }
-
-//   addRecurso(tipoRecurso: ResourceType, listaRecursos: Array<[string, string]>) {
-//     if (this.listaStringsRecursos[tipoRecurso]) {
-//       this.listaStringsRecursos[tipoRecurso] = this.listaStringsRecursos[tipoRecurso].concat(listaRecursos);
-//     } else {
-//       this.listaStringsRecursos[tipoRecurso] = ([] as Array<[string, string]>).concat(listaRecursos);
-//     }
-//   }
-
-//   addSprite(listaStringsSprites: Array<ISpriteImportResource>) {
-//     if (this.listaStringsSprites) {
-//       this.listaStringsSprites = this.listaStringsSprites.concat(listaStringsSprites);
-//     } else {
-//       this.listaStringsSprites = ([] as Array<ISpriteImportResource>).concat(listaStringsSprites);
-//     }
-//   }
-
-//   preload() {
-
-//     for (let propertyName in this.listaStringsRecursos) {
-//       this.listaStringsRecursos[propertyName as ResourceName].
-//         forEach((tuple) => {
-//           let res: any = this.loadResource(propertyName as ResourceType, tuple[1]);
-//           if (this.listaRecursos[propertyName as ResourceName]) {
-//             this.listaRecursos[propertyName as ResourceName].push([tuple[0], res]);
-//           } else {
-//             this.listaRecursos[propertyName as ResourceName] = ([] as Array<[string, any]>).concat([[tuple[0], res]]);
-//           }
-//         });
-//     }
-
-//     this.listaStringsSprites.forEach(stringSprite => {
-//       const name: string = stringSprite.name;
-//       let image: p5.Image = loadImage(stringSprite.path);
-//       const sprite: Sprite = new Sprite(
-//         image,
-//         stringSprite.spriteWidth,
-//         stringSprite.spriteHeight,
-//         stringSprite.spriteNumber,
-//         stringSprite.spritePerRow,
-//         stringSprite.tipoColisao,
-//         stringSprite.caixaColisao,
-//         stringSprite.recolors
-//       );
-//       if (this.listaRecursos[ResourceType.spriteSheet as ResourceName]) {
-//         this.listaRecursos[ResourceType.spriteSheet as ResourceName].push([name, sprite]);
-//       } else {
-//         this.listaRecursos[ResourceType.spriteSheet as ResourceName] = ([] as Array<[string, any]>).concat([[name, sprite]]);
-//       }
-//     });
-//   }
-
-//   load() {
-//     this.listaRecursos[ResourceType.spriteSheet as ResourceName].forEach(rsrc => {
-
-//       const recolorSprites = (rsrc[1] as Sprite).generateRecolorList(rsrc[0]);
-//       if (recolorSprites) {
-//         recolorSprites.forEach(recoloredSprite => {
-//           this.listaRecursos[ResourceType.spriteSheet as ResourceName].push([recoloredSprite[0], (rsrc[1] as Sprite).changeSprite(recoloredSprite[1])]);
-//         });
-//       }
-//     });
-//     this.createAnimations();
-//   }
-
-//   getRecurso<T>(tipoRecurso: ResourceType, nomeRecurso: string): T | undefined {
-//     let selectedRes = this.listaRecursos[tipoRecurso as ResourceName].find(r => r[0] === nomeRecurso)
-//     return (selectedRes) ? selectedRes[1] as T : undefined;
-//   }
-
-//   private loadResource(tipoRecurso: ResourceType, caminho: string): any {
-//     switch (tipoRecurso) {
-//       case ResourceType.font:
-//         return loadFont(caminho);
-//       case ResourceType.image:
-//         return loadImage(caminho);
-//       case ResourceType.sound:
-//         return new p5.SoundFile(caminho).loadSound(caminho);
-//       case ResourceType.text:
-//         return caminho;
-//     }
-//   }
-
 
 //   private createAnimations() {
 //     let spriteSheetList = [] as Array<Sprite|undefined>;
