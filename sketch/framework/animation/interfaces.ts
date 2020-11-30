@@ -1,4 +1,5 @@
-import { IScene } from '../controller/interfaces';
+import { IRecolor } from '../../interfaces';
+import { IResource, IResourceController, IScene } from '../controller/interfaces';
 import { ShapeType } from '../enums'
 
 export interface ISpriteSheet {
@@ -8,8 +9,10 @@ export interface ISpriteSheet {
     spriteHeight: number;
     spriteNumber: number;
     spritesByRow: number;
+    recolor?: Array<IRecolor>;
     drawSprite(spriteFrame: ISpriteFrame, location: IShape): void;
     drawCollisionShape(spriteFrame: ISpriteFrame, location: IShape): void;
+    generateColoredSpriteSheets(resourceController: IResourceController): Array<IResource>;
 }
 
 export interface ICoord {
@@ -45,11 +48,24 @@ export interface IShape {
     globalScale: number
 }
 
+export interface IImage {
+    image: p5.Image,
+    position: IShape
+}
+
+
+
 export interface IActor {
     scene: IScene<any>;
     shape: IShape;
-    setSpriteAnimations(...animations: ISpriteAnimation[]): void;
     update(): void;
     draw(): void;
-    sendKeyEvents(keyCode: number): void;
+}
+
+export interface IImageActor extends IActor {
+    setImage(image: IImage): void;
+}
+
+export interface IAnimatedActor extends IActor {
+    setSpriteAnimations(...animations: ISpriteAnimation[]): void;
 }
