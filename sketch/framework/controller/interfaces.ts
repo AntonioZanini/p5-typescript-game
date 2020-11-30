@@ -1,4 +1,5 @@
-import { ShapeType, ColorName, ResourceType } from '../enums';
+import { ISpriteAnimation } from '../../interfaces';
+import { ShapeType, AvailableColor, ResourceType, ResourceContentType } from '../enums';
 
 export interface IScoreItem {
     name: string,
@@ -7,12 +8,28 @@ export interface IScoreItem {
 
 export interface IRecolor {
     sufix: string;
-    colorName: ColorName;
+    colorName: AvailableColor;
 }
 
-export interface ISpriteImportResource {
+export interface IResource {
+    id: string;
+    content: ResourceContentType;
+}
+
+export interface IResourcePackJSON {
+    resources: Array<IImportResource>,
+}
+
+interface IImportResourceBase {
     id: string,
-    path: string,
+    type: ResourceType
+}
+
+export interface IImportResourceFile extends IImportResourceBase {
+    path: string
+}
+
+export interface ISpriteImportResource extends IImportResourceFile {
     spriteWidth: number,
     spriteHeight: number,
     spriteNumber: number,
@@ -22,17 +39,22 @@ export interface ISpriteImportResource {
     recolors?: Array<IRecolor>
 }
 
-export interface IImportResource {
-    id: string,
-    path: string
+export interface IImportResourceText extends IImportResourceBase {
+    content: string,
+}
+
+export type IImportResource = IImportResourceFile | IImportResourceText | ISpriteImportResource;
+
+export interface IAnimationResourceLoader {
+    load(resourceController: IResourceController) : Array<ISpriteAnimation>
 }
 
 export interface IResourceController {
     importFromJSON(path: string) : void,
-    addResources(resourceType: ResourceType, ...resources: Array<IImportResource>): void,
-    addSpriteResources(sprites: Array<ISpriteImportResource>): void,
-    load(): void,
-    getRecurso<T>(resourceType: ResourceType, resourceID: string): T
+    getColor(availableColor: AvailableColor) : p5.Color,
+    addResources(...resources: Array<IImportResource>): void,
+    load(animationResourceLoader?: IAnimationResourceLoader): void,
+    getRecurso<T extends ResourceContentType>(resourceType: ResourceType, resourceID: string): T
 }
 
 export interface IKeyEventListener {
