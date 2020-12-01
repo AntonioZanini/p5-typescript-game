@@ -1,10 +1,12 @@
+import { IBackgroundImage } from "../../framework/animation/interfaces";
 import { IScene, ISceneController } from "../../framework/controller/interfaces";
 
 export default class SceneBase<T> implements IScene<T> {
-    id: T;
-    controller: ISceneController<T>;
-    background: IBackground;
-    
+    private id: T;
+    private controller: ISceneController<T>;
+    private backgroundImage: IBackgroundImage;
+    private backgroundSound: p5.SoundFile;
+
     getSceneID(): T {
         return this.id;
     }
