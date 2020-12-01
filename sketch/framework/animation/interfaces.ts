@@ -1,5 +1,4 @@
-import { IRecolor } from '../../interfaces';
-import { IResource, IResourceController, IScene } from '../controller/interfaces';
+import { IRecolor, IResource, IResourceController, IScene } from '../controller/interfaces';
 import { ShapeType } from '../enums'
 
 export interface ISpriteSheet {
@@ -13,6 +12,15 @@ export interface ISpriteSheet {
     drawSprite(spriteFrame: ISpriteFrame, location: IShape): void;
     drawCollisionShape(spriteFrame: ISpriteFrame, location: IShape): void;
     generateColoredSpriteSheets(resourceController: IResourceController): Array<IResource>;
+}
+
+export interface IBackgroundImage {
+    imageID: string;
+    cutShape: IShape;
+    location: IShape;
+    load(resourceController: IResourceController): void;
+    update(): void;
+    draw(): void;
 }
 
 export interface ICoord {
