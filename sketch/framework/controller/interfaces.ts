@@ -1,4 +1,4 @@
-import { ISpriteAnimation } from '../../interfaces';
+import { ISpriteAnimation } from '../animation/interfaces';
 import { ShapeType, AvailableColor, ResourceType, ResourceContentType } from '../enums';
 
 export interface IScoreItem {
