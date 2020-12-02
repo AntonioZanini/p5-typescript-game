@@ -15,4 +15,9 @@ export enum ResourceType {
     text = "Text"
 }
 
+export enum ModifierType {
+    Sum,
+    Multiply
+}
+
 
