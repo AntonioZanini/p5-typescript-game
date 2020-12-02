@@ -50,7 +50,7 @@ export default class ResourceController implements IResourceController {
         }
     }
 
-    getRecurso<T extends ResourceContentType>(resourceType: ResourceType, resourceID: string): T {
+    getResource<T extends ResourceContentType>(resourceType: ResourceType, resourceID: string): T {
         let resource = this.resources[resourceType].find(r => r.id === resourceID)
         return resource?.content as T ;
     }
