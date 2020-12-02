@@ -2,10 +2,10 @@ import { IBackgroundImage } from "../../framework/animation/interfaces";
 import { IScene, ISceneController } from "../../framework/controller/interfaces";
 
 export default abstract class SceneBase<T> implements IScene<T> {
-    private id: T;
-    private controller: ISceneController<T>;
-    private backgroundImage: IBackgroundImage;
-    private backgroundSound: p5.SoundFile;
+    protected id: T;
+    protected controller: ISceneController<T>;
+    protected backgroundImage: IBackgroundImage;
+    protected backgroundSound: p5.SoundFile;
 
     getSceneID(): T {
         return this.id;
@@ -17,11 +17,7 @@ export default abstract class SceneBase<T> implements IScene<T> {
 
     abstract initialize(): void;
 
-    abstract playStartingAnimation(): void;
-
     abstract playScene(): void;
-
-    abstract playEndingAnimation(): void;
 
     abstract close(): void;
 
