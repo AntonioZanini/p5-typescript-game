@@ -1,5 +1,5 @@
 import { IRecolor, IResource, IResourceController, IScene } from '../controller/interfaces';
-import { ShapeType } from '../enums'
+import { ModifierType, ShapeType } from '../enums'
 
 export interface ISpriteSheet {
     id: string;
@@ -19,7 +19,7 @@ export interface IBackgroundImage {
     cutShape: IShape;
     location: IShape;
     load(resourceController: IResourceController): void;
-    update(): void;
+    update(modifier: IModifier): void;
     draw(): void;
 }
 
@@ -53,7 +53,9 @@ export interface IShape {
     width: number,
     height: number,
     diameter: number,
-    globalScale: number
+    globalScale: number,
+    getScaledVersion() : IShape,
+    getArray(): Array<Number>
 }
 
 export interface IImage {
@@ -61,7 +63,13 @@ export interface IImage {
     position: IShape
 }
 
-
+export interface IModifier {
+    type: ModifierType,
+    xPos: number,
+    yPos: number,
+    width: number,
+    height: number
+}
 
 export interface IActor {
     scene: IScene<any>;
