@@ -54,7 +54,7 @@ export interface IResourceController {
     getColor(availableColor: AvailableColor) : p5.Color,
     addResources(...resources: Array<IImportResource>): void,
     load(animationResourceLoader?: IAnimationResourceLoader): void,
-    getRecurso<T extends ResourceContentType>(resourceType: ResourceType, resourceID: string): T
+    getResource<T extends ResourceContentType>(resourceType: ResourceType, resourceID: string): T
 }
 
 export interface IKeyEventListener {
@@ -88,8 +88,6 @@ export interface IScene<T> {
     getSceneID(): T,
     setSceneController(args: ISceneController<T>): void,
     initialize(): void,
-    playStartingAnimation(): void,
     playScene(): void,
-    playEndingAnimation(): void,
     close(): void
 }
