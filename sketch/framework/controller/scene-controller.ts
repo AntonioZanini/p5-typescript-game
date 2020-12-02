@@ -35,12 +35,10 @@ export default class SceneController<T> implements ISceneController<T> {
         this.currentScene = this.getCurrentScene();
         if (!this.currentScene) { return; }
         this.currentScene.initialize();
-        this.currentScene.playStartingAnimation();
     }
     
     private closeScene() : void
     {
-        this.currentScene.playEndingAnimation();
         this.currentScene.close();
     }
 
