@@ -35,7 +35,6 @@ export interface ISpriteImportResource extends IImportResourceFile {
     spriteNumber: number,
     spritePerRow: number,
     colisionType: ShapeType,
-    colisionBox: Array<number>,
     recolors?: Array<IRecolor>
 }
 
