@@ -1,64 +1,68 @@
 {
-    "commonResources": [
+    "resources": [
         {
-            "name": "BG_FOREST",
-            "path": "assets/background/forest.png",
-            "type": "IMAGEM"
-        }
-    ],
-    "spriteResources": [
+            "name": "bg-forest",
+            "path": "assets/images/background/forest.png",
+            "type": "Image"
+        },
         {
-            "name": "slime",
-            "path": "assets/sprites/slime-moving.png",
+            "name": "bgi-main-title",
+            "path": "assets/images/background/montains.png",
+            "type": "Image"
+        },
+        {
+            "name": "bgm-main-title",
+            "path": "assets/sounds/bgm/main-title.mp3",
+            "type": "Sound"
+        },
+        {
+            "name": "moving-slime",
+            "path": "assets/images/v/slime-moving.png",
+            "type": "SpriteSheet",
             "spriteWidth": 120,
             "spriteHeight": 120,
             "spriteNumber": 28,
             "spritePerRow": 5,
-            "tipoColisao": "circle",
-            "caixaColisao": [0.5, 0.5, 1],
             "recolors": [
-                { "sufix": "red", "colorName": "vermelho"},
-                { "sufix": "green", "colorName": "verde" },
-                { "sufix": "blue", "colorName": "azul" }
+                { "sufix": "red", "colorName": "red"},
+                { "sufix": "green", "colorName": "green" },
+                { "sufix": "blue", "colorName": "blue" }
             ]
         },
         {
-            "name": "dog",
-            "path": "assets/sprites/dog-walk.png",
+            "name": "walking-dog",
+            "path": "assets/images/sprite-sheets/dog-walk.png",
+            "type": "SpriteSheet",
             "spriteWidth": 264,
             "spriteHeight": 202,
             "spriteNumber": 28,
             "spritePerRow": 5,
-            "tipoColisao": "circle",
-            "caixaColisao": [0.5, 0.5, 0.8],
             "recolors": [
-                { "sufix": "red", "colorName": "vermelho"},
-                { "sufix": "green", "colorName": "verde" }
+                { "sufix": "red", "colorName": "red"},
+                { "sufix": "green", "colorName": "green" }
             ]
         },
         {
-            "name": "dogPulando",
-            "path": "assets/sprites/test_jump-Sheet.png",
+            "name": "jumping-dog",
+            "path": "assets/images/sprite-sheets/test_jump-Sheet.png",
+            "type": "SpriteSheet",
             "spriteWidth": 224,
             "spriteHeight": 192,
             "spriteNumber": 25,
             "spritePerRow": 5,
-            "tipoColisao": "circle",
-            "caixaColisao": [85, 55, 0.8],
             "recolors": [
-                { "sufix": "red", "colorName": "vermelho"},
-                { "sufix": "green", "colorName": "verde" }
+                { "sufix": "red", "colorName": "red"},
+                { "sufix": "green", "colorName": "green" }
             ]
         },
         {
-            "name": "witchCharge",
-            "path": "assets/sprites/witch-charge.png",
+            "name": "charging-witch",
+            "path": "assets/images/sprite-sheets/witch-charge.png",
+            "type": "SpriteSheet",
             "spriteWidth": 480,
             "spriteHeight": 480,
             "spriteNumber": 14,
-            "spritePerRow": 5,
-            "tipoColisao": "circle",
-            "caixaColisao": [85, 55, 0.8]
+            "spritePerRow": 5
         }
 
     ]
